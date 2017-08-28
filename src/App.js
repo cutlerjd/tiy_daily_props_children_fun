@@ -21,7 +21,12 @@ class Footer extends Component {
 class BaseLayout extends Component {
   render() {
     return (
+      <div>
+      <Header />
+      {this.props.children}
       <div>This should house Header and Footer components and be able to house any children components.</div>
+      <Footer />
+      </div>
     );
   }
 }
@@ -32,8 +37,8 @@ class ParentComponent extends Component {
 
     //we are really in a *bind* here.... :)
     //fix it...
-this.handleInput= this.handleInput.bind(this)
-this.handleSubmit=this.handleSubmit.bind(this)
+  this.handleInput= this.handleInput.bind(this)
+  this.handleSubmit=this.handleSubmit.bind(this)
     //state lives here
     this.state = {
       whatToSay: "",
@@ -43,7 +48,7 @@ this.handleSubmit=this.handleSubmit.bind(this)
   handleInput(e) {
     e.preventDefault();
     //set the state on input change
-    this.setState({whatToSay: this.state.whatToSay});
+    this.setState({whatToSay: e.target.value});
   }
   handleSubmit(e) {
     e.preventDefault();
@@ -59,11 +64,11 @@ this.handleSubmit=this.handleSubmit.bind(this)
     return (
       <div>Smart Component: I have a function, but something isn't working? I also need to pass that function to the ChildComponent.
         <div>
-          <input onChange={this.handleInput} type="text" placeholder="Say It, Don't Spray It!" />
+          <input onChange={this.handleInput} type="text" placeholder="Say It, Don't Spray It!" value={this.state.whatToSay}/>
         </div>
         <div>
           <ChildComponent onClick={this.handleSubmit}/>
-          <DisplayComponent sayWhat={this.handleInput} />
+          <DisplayComponent sayWhat={this.state.whatWasSaid} />
         </div>
       </div>
     );
@@ -101,10 +106,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <BaseLayout></BaseLayout>
-        <Header />
+        <BaseLayout>
         <ParentComponent />
-        <Footer />
+        </BaseLayout>
       </div>
     );
   }
